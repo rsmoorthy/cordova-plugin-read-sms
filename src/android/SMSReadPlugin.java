@@ -31,6 +31,7 @@ import org.json.JSONObject;
 public class SMSReadPlugin extends CordovaPlugin {
     private static final String LOGTAG = "SMSReadPlugin";
 
+    public static final String ACTION_SET_OPTIONS = "setOptions";
     private static final String ACTION_START_WATCH = "startWatch";
     private static final String ACTION_STOP_WATCH = "stopWatch";
 
@@ -229,7 +230,7 @@ public class SMSReadPlugin extends CordovaPlugin {
                 Log.d(LOGTAG, ("onRecieve: " + action));
                 if (SMS_RECEIVED.equals(action)) {
                     Bundle bundle;
-                    if (SMSPlugin.this.mIntercept) {
+                    if (SMSReadPlugin.this.mIntercept) {
                         this.abortBroadcast();
                     }
                     if ((bundle = intent.getExtras()) != null) {
@@ -237,8 +238,8 @@ public class SMSReadPlugin extends CordovaPlugin {
                         if ((pdus = (Object[])bundle.get("pdus")).length != 0) {
                             for (int i = 0; i < pdus.length; ++i) {
                                 SmsMessage sms = SmsMessage.createFromPdu((byte[])((byte[])pdus[i]));
-                                JSONObject json = SMSPlugin.this.getJsonFromSmsMessage(sms);
-                                SMSPlugin.this.onSMSArrive(json);
+                                JSONObject json = SMSReadPlugin.this.getJsonFromSmsMessage(sms);
+                                SMSReadPlugin.this.onSMSArrive(json);
                             }
                         }
                     }
@@ -285,7 +286,7 @@ public class SMSReadPlugin extends CordovaPlugin {
                     Log.d(LOGTAG, ("n = " + n));
                     if (n > 0 && cur.moveToFirst()) {
                         JSONObject json;
-                        if ((json = SMSPlugin.this.getJsonFromCursor(cur)) != null) {
+                        if ((json = SMSReadPlugin.this.getJsonFromCursor(cur)) != null) {
                             onSMSArrive(json);
                         } else {
                             Log.d(LOGTAG, "fetch record return null");
