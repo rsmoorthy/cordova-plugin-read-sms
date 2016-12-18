@@ -20,7 +20,7 @@
   <!-- android -->
   <platform name="android">
     <config-file target="res/xml/config.xml" parent="/*">
-    	<feature name="SMS">
+    	<feature name="SMSRead">
       	<param name="android-package" value="org.ereceipts.cordova.sms.SMSReadPlugin"/>
     	</feature>
   	</config-file>
